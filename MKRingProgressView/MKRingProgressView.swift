@@ -299,7 +299,11 @@ open class MKRingProgressLayer: CALayer {
         let w: CGFloat = ringWidth
         let r = min(bounds.width, bounds.height)/2 - w/2
         let c = CGPoint(x: bounds.width/2, y: bounds.height/2)
-        let p = max(0.0, self.presentation()?.progress ?? 0.0)
+        let p: CGFloat
+        switch presentation() {
+        case .none: p = max(progress, 0)
+        case .some(let value): p = max(value.progress, 0)
+        }
         let angleOffset = π / 2
         let angle = 2 * π * p - angleOffset
         let minAngle = 1.1 * atan(0.5 * w / r)
